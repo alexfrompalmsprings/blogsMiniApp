@@ -51,7 +51,7 @@ showPosts();
 
 
 // show circle loading and bring more posts ..
-function showLoading(){
+function showLoading() {
   console.log('close to reaching the end, probably need to implement unlimited scrolling');
   loading.classList.add('show');
 
@@ -67,10 +67,29 @@ function showLoading(){
 
   }, 300);
 
-
-
 }
 
+// FILTER the posts based in the clients input
+function filterPosts(e) {
+
+  let input = e.target.value.toUpperCase();
+  let posts = document.querySelectorAll('.post')
+
+  // loop through the posts and filter
+  posts.forEach((post) => {
+    let title = post.querySelector('.post-title').innerText.toUpperCase();
+    let body = post.querySelector('.post-body').innerText.toUpperCase();
+
+    if ((title.includes(input)) || (body.includes(input))) {
+      post.style.display = 'flex';
+
+    } else {
+      post.style.display = 'none';
+
+    }
+  })
+
+}
 
 
 // -------------- event listeners --------------
@@ -81,12 +100,13 @@ window.addEventListener('scroll', () => {
     clientHeight
   } = document.documentElement;
 
-  console.log(scrollHeight, scrollTop, clientHeight);
+  // console.log(scrollHeight, scrollTop, clientHeight);
 
-  if(scrollTop + clientHeight >= (scrollHeight - 20)){
-
+  if (scrollTop + clientHeight >= (scrollHeight - 20)) {
     showLoading();
 
   }
 
 });
+
+window.addEventListener('input', filterPosts);
