@@ -1,7 +1,8 @@
 // -------------- DOM Elements --------------
 const postsContainer = document.getElementById('post-container');
 const filter = document.getElementById('filter');
-const loader = document.getElementById('loader');
+const loading = document.querySelector('.loader');
+
 
 let limit = 5;
 let page = 1;
@@ -44,8 +45,48 @@ async function showPosts() {
     postsContainer.appendChild(postElement);
 
   });
+}
+// bring the initial posts
+showPosts();
+
+
+// show circle loading and bring more posts ..
+function showLoading(){
+  console.log('close to reaching the end, probably need to implement unlimited scrolling');
+  loading.classList.add('show');
+
+  // remove the dots from the page after 1s
+  setTimeout(() => {
+    loading.classList.remove('show')
+  }, 1000);
+
+  // bring more posts to the miniApp
+  setTimeout(() => {
+    page++;
+    showPosts();
+
+  }, 300);
+
+
 
 }
 
-// bring the initial posts
-showPosts();
+
+
+// -------------- event listeners --------------
+window.addEventListener('scroll', () => {
+  const {
+    scrollTop,
+    scrollHeight,
+    clientHeight
+  } = document.documentElement;
+
+  console.log(scrollHeight, scrollTop, clientHeight);
+
+  if(scrollTop + clientHeight >= (scrollHeight - 20)){
+
+    showLoading();
+
+  }
+
+});
